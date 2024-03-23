@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: board-app
+  labels:
+    app: board-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: board-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: board-app
+        project: seoulit
+        env: production
+        version: v2
+    spec:
+      containers:
+      - name: board-app
+        image: 598552988151.dkr.ecr.ap-northeast-1.amazonaws.com/board:1.0
+
+        ports:
+        - containerPort: 8080

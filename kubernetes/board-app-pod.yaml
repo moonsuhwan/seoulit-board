@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: board-app
+spec:
+  containers:
+  - name: board-app
+    image: 598552988151.dkr.ecr.ap-northeast-1.amazonaws.com/board:1.0
+    ports:
+    - containerPort: 8080
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: NAMESPACE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: NODE_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: STUDENT_NAME
+      value: 박진우
+    - name: GREETING
+      value: 서울it교육센터에 오신 것을 환영합니다. $(STUDENT_NAME)님!
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"

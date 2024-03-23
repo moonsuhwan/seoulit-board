@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "board"
+  namespace: "board"
+  annotations:
+    kubernetes.io/ingress.class: alb # the value we set in alb-ingress-controller
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: subnet-0580bfb810a6b90e3","subnet-05d91d0d65600d8e9
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: "board"
+              servicePort: 8080

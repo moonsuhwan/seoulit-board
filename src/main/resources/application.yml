@@ -1,0 +1,24 @@
+spring:
+    application: 
+        name: jpaservice
+    datasource:
+        url: jdbc:log4jdbc:mysql://172.17.0.2:3306/jpastart?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        generate-ddl: false
+    redis:
+        port: 6379
+        host: localhost
+server:
+    port: 8080
+
+mybatis:
+    mapper-locations: classpath:mapper/**/*.xml
+    type-aliases-package: board.board
+    configuration:
+        map-underscore-to-camel-case: true

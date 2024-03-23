@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: board-replicaset
+spec:
+  selector:
+    matchLabels:
+      app: board-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: board-app
+    spec:
+      containers:
+      - name: board-app
+        image: 598552988151.dkr.ecr.ap-northeast-1.amazonaws.com/board:1.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: STUDENT_NAME
+          value: 박진우
+        - name: GREETING
+          value: 서울it교육센터에 오신 것을 환영합니다. $(STUDENT_NAME)님!
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"

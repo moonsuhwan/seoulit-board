@@ -1,0 +1,80 @@
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1111';
+
+CREATE DATABASE jpastart CHARACTER SET utf8;
+
+CREATE USER 'jpauser'@'localhost' IDENTIFIED BY 'jpapass';
+CREATE USER 'jpauser'@'%' IDENTIFIED BY 'jpapass';
+
+
+
+ALTER USER 'jpauser'@'localhost' IDENTIFIED WITH mysql_native_password
+BY 'jpapass'
+
+
+GRANT ALL PRIVILEGES ON jpastart.* TO 'jpauser'@'localhost';
+GRANT ALL PRIVILEGES ON jpastart.* TO 'jpauser'@'%';
+
+CREATE USER 'root'@'%' IDENTIFIED BY '1111';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+
+
+CREATE TABLE `t_board` (
+  `board_idx` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(300) NOT NULL,
+  `contents` LONGTEXT NOT NULL,
+  `hit_cnt` INT(10) NOT NULL DEFAULT '0',
+  `created_datetime` DATETIME NOT NULL,
+  `creator_id` VARCHAR(50) NOT NULL,
+  `updated_datetime` DATETIME DEFAULT NULL,
+  `updater_id` VARCHAR(50) DEFAULT NULL,
+  `deleted_yn` CHAR(1) DEFAULT 'N',
+  PRIMARY KEY (`board_idx`)
+) ENGINE=INNODB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `t_file` (
+  `idx` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `board_idx` INT(10) UNSIGNED NOT NULL,
+  `original_file_name` VARCHAR(255) NOT NULL,
+  `stored_file_path` VARCHAR(50) NOT NULL,
+  `file_size` INT(15) NOT NULL,
+  `creator_id` VARCHAR(50) NOT NULL,
+  `created_datetime` DATETIME NOT NULL,
+  `updator_id` VARCHAR(50) DEFAULT NULL,
+  `updated_datetime` DATETIME DEFAULT NULL,
+  `deleted_yn` CHAR(1) DEFAULT 'N',
+  PRIMARY KEY (`idx`,`created_datetime`)
+) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `t_jpa_board` (
+  `board_idx` INT(11) NOT NULL AUTO_INCREMENT,
+  `contents` VARCHAR(255) NOT NULL,
+  `created_datetime` DATETIME NOT NULL,
+  `creator_id` VARCHAR(255) NOT NULL,
+  `hit_cnt` INT(11) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `updated_datetime` DATETIME DEFAULT NULL,
+  `updater_id` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`board_idx`)
+) ENGINE=INNODB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `t_jpa_file` (
+  `idx` INT(11) NOT NULL AUTO_INCREMENT,
+  `created_datetime` DATETIME NOT NULL,
+  `creator_id` VARCHAR(255) NOT NULL,
+  `file_size` BIGINT(20) NOT NULL,
+  `original_file_name` VARCHAR(255) NOT NULL,
+  `stored_file_path` VARCHAR(255) NOT NULL,
+  `updated_datetime` DATETIME DEFAULT NULL,
+  `updater_id` VARCHAR(255) DEFAULT NULL,
+  `board_idx` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`idx`),
+  KEY `FK2nbe74xrl4gfj0wnqo1d6dk3l` (`board_idx`),
+  CONSTRAINT `FK2nbe74xrl4gfj0wnqo1d6dk3l` FOREIGN KEY (`board_idx`) REFERENCES `t_jpa_board` (`board_idx`)
+) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `test` (
+  `id` INT(11) DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
